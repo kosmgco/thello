@@ -1,11 +1,12 @@
 import { accessSync, constants, lstatSync } from 'fs';
+import { dirname } from 'path';
 import * as vscode from 'vscode';
 import cp = require('child_process')
 
 export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
-		vscode.languages.registerCodeActionsProvider({ scheme: "file", language: "go" }, new Semicolonzer(), {
-			providedCodeActionKinds: Semicolonzer.providedCodeActionKinds
+		vscode.languages.registerCodeActionsProvider({ scheme: "file", language: "go" }, new Impler(), {
+			providedCodeActionKinds: Impler.providedCodeActionKinds
 		})
 	);
 }
@@ -13,7 +14,7 @@ export function activate(context: vscode.ExtensionContext) {
 /**
  * Provides code actions for converting :) to a smiley semi.
  */
-export class Semicolonzer implements vscode.CodeActionProvider {
+export class Impler implements vscode.CodeActionProvider {
 
 	public static readonly providedCodeActionKinds = [
 		vscode.CodeActionKind.Refactor
@@ -54,10 +55,10 @@ export class Semicolonzer implements vscode.CodeActionProvider {
 
 	private createFix(document: vscode.TextDocument, range: vscode.Range, receiver: String, interfaces: String, binPath: string): vscode.CodeAction {
 		let title = `Implement ${receiver} ${interfaces}`
-		var fix = new vscode.CodeAction(title, vscode.CodeActionKind.QuickFix);
+		let fix = new vscode.CodeAction(title, vscode.CodeActionKind.QuickFix);
 		fix.edit = new vscode.WorkspaceEdit();
 
-		let args = [`${receiver.charAt(0).toLowerCase()} *${receiver}`, `${interfaces}`]
+		let args = ["-dir", `${dirname(document.fileName)}`, `${receiver.charAt(0).toLowerCase()} *${receiver}`, `${interfaces}`]
 		let out = cp.execFileSync(
 			binPath,
 			args,

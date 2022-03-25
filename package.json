@@ -2,7 +2,7 @@
 	"name": "thello",
 	"displayName": "thello",
 	"description": "golang implements interface quickly",
-	"version": "0.0.1",
+	"version": "0.0.3",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/kosmgco/thello"
@@ -14,23 +14,11 @@
 		"Programming Languages"
 	],
 	"activationEvents": [
-		"onLanguage:go",
-		"onCommand:thello.helloWorld"
+		"onLanguage:go"
 	],
 	"publisher": "ooops",
 	"main": "./out/extension.js",
-	"contributes": {
-		"commands": [
-			{
-				"command": "thello.helloWorld",
-				"title": "Hello World"
-			},
-			{
-				"command": "code-actions-sample.command",
-				"title": "ddd"
-			}
-		]
-	},
+	"contributes": {},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -p ./",
